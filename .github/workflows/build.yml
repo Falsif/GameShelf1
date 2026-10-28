@@ -53,6 +53,7 @@ jobs:
           VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts)
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/GameShelf-v${VERSION}.apk"
+          echo "APP_VERSION=${VERSION}" >> "$GITHUB_ENV"
           ls -la dist
 
       - name: Загрузить APK
@@ -62,10 +63,15 @@ jobs:
           path: dist/*.apk
           if-no-files-found: error
 
-      - name: Опубликовать релиз (для тегов v*)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Опубликовать APK в Releases
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.apk
-          name: GameShelf ${{ github.ref_name }}
-          body: "GameShelf от LUNEXA. Скачайте APK ниже и установите на Android 8.0+."
+          tag_name: v${{ env.APP_VERSION }}
+          target_commitish: ${{ github.sha }}
+          name: GameShelf v${{ env.APP_VERSION }}
+          make_latest: true
+          body: |
+            GameShelf от LUNEXA — библиотека игр.
+            Скачайте файл GameShelf-v${{ env.APP_VERSION }}.apk ниже и установите на Android 8.0+.
