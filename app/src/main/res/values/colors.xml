@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gs_background">#FF0D0F17</color>
+    <color name="gs_card">#FF191D2A</color>
+    <color name="gs_accent">#FF8B5CF6</color>
+    <color name="gs_accent_light">#FFA78BFA</color>
+    <color name="ic_launcher_background">#FF0D0F17</color>
+</resources>
